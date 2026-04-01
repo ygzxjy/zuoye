@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多媒体内容展示平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #2d3748;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-bottom: 3px solid;
+            border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) 1;
+        }
+
+        /* 视频区域样式 */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 15px;
+            background: #000;
+            margin-bottom: 20px;
+        }
+
+        .video-wrapper iframe,
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .video-info h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .video-info p {
+            color: #718096;
+        }
+
+        /* 图片区域样式 */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .image-card {
+            background: #f7fafc;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-card-content {
+            padding: 20px;
+        }
+
+        .image-card-content h4 {
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .image-card-content p {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        /* 音频区域样式 */
+        .audio-player {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .audio-player audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 20px;
+        }
+
+        .audio-info {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .audio-info h4 {
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .audio-info p {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        
+        .placeholder {
+            background: #fff;
+            border: 2px dashed #cbd5e0;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            color: #a0aec0;
+            margin: 20px 0;
+        }
+
+        .placeholder p {
+            font-size: 1.1em;
+        }
+
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            section {
+                padding: 25px;
+            }
+
+            .section-title {
+                font-size: 1.5em;
+            }
+
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        footer p {
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <header>
+            <h1>多媒体内容展示平台</h1>
+            <p>集成视频、图片、音频的一站式内容展示框架</p>
+        </header>
+
+
+        <section id="video-section">
+            <h2 class="section-title">🎬 视频展示</h2>
+
+            <div class="video-wrapper">
+
+                <iframe 
+                    src="https://www.bilibili.com/video/BV1NUAwzuE3C/?share_source=copy_web" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-info">
+                <h3>示例视频标题</h3>
+                <p>这里是视频的描述信息，你可以自由编辑内容...</p>
+            </div>
+
+            <div class="video-wrapper">
+
+                <iframe 
+                    src="bilibili.com/player.html?bvid=BV1xx411c7mD" 
+                    scrolling="no" 
+                    border="0" 
+                    frameborder="no" 
+                    framespacing="0" 
+                    allowfullscreen="true">
+                </iframe>
+            </div>
+            <div class="video-info">
+                <h3>B站视频示例</h3>
+                <p>B站视频嵌入示例，可替换为你想要的视频链接...</p>
+            </div>
+
+            
+            
+        </section>
+
+        
+        <section id="image-section">
+            <h2 class="section-title">🖼️ 图片展示</h2>
+            <div class="image-grid">
+               
+                <div class="image-card">
+    
+                    <img src="./图片1.png" alt="示例图片1">
+                    <div class="image-card-content">
+                        <h4>图片标题 1</h4>
+                        <p>这里是图片的描述信息，可以详细介绍图片内容...</p>
+                    </div>
+                </div>
+
+             
+                <div class="image-card">
+                    <img src="./国风/u=1388867852,789527762&fm=253&fmt=auto&app=120&f=JPEG.webp" alt="示例图片2">
+                    <div class="image-card-content">
+                        <h4>图片标题 2</h4>
+                        <p>描述信息区域，支持多行文本展示...</p>
+                    </div>
+                </div>
+
+                
+                <div class="image-card">
+                    <img src="./国风/u=1585884457,312149237&fm=253&fmt=auto&app=138&f=JPEG.webp" alt="示例图片3">
+                    <div class="image-card-content">
+                        <h4>图片标题 3</h4>
+                        <p>可以添加更多图片卡片，复制整个 div 块即可...</p>
+                    </div>
+                </div>
+
+                
+                <div class="image-card">
+                    <img src="./国风/u=1684367975,1729739224&fm=253&fmt=auto&app=138&f=JPEG.webp" alt="示例图片4">
+                    <div class="image-card-content">
+                        <h4>图片标题 4</h4>
+                        <p>网格布局自适应，无需手动调整宽度...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="audio-section">
+            <h2 class="section-title">🎵 音频展示</h2>
+            
+           
+            <div class="audio-player">
+                
+                <audio controls>
+                    <source src="./神曼波【哈基米音乐】 - 月底没钱君.mp3" type="audio/mpeg">
+                    您的浏览器不支持音频标签。
+                </audio>
+                <div class="audio-info">
+                    <h4>哈吉米曼波</h4>
+                    <p>音频描述信息，可以介绍音频内容、作者等...</p>
+                </div>
+            </div>
+
+            
+            <div class="audio-player">
+                <audio controls>
+                    <source src="./逐空·高考战歌 - 叶斯淳_菜籽油Clazy.mp3" type="audio/mpeg">
+                    您的浏览器不支持音频标签。
+                </audio>
+                <div class="audio-info">
+                    <h4>逐空</h4>
+                    <p>可添加多个音频播放器，复制整个 audio-player div 即可...</p>
+                </div>
+            </div>
+
+         
+           
+        </section>
+
+        <section id="custom-section">
+            <h2 class="section-title">✨ 自定义内容</h2>
+            <div class="placeholder">
+                <p>这里可以添加任何自定义内容，如文本、链接、表格等...</p>
+                <p>编辑此 HTML 文件，在此区域插入你想要的内容即可。</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 多媒体内容展示平台 | 灵活自定义，自由创作</p>
+        </footer>
+    </div>
+</body>
+</html>
